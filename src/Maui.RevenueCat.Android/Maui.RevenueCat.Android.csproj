@@ -1,10 +1,31 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net8.0-android</TargetFramework>
+	 <!--min.supported version v19 is extracted from the AndroidManifest.xml of .aar-->
+	 <!--but v21 is from MAUI: https://learn.microsoft.com/en-us/dotnet/maui/supported-platforms-->
     <SupportedOSPlatformVersion>21</SupportedOSPlatformVersion>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
+
+	<PropertyGroup Label="NugetProperties">
+		<Authors>Kebechet</Authors>
+		<IsPackable>true</IsPackable>
+		<PackageId>Kebechet.Maui.RevenueCat.Android</PackageId>
+		<Description>Contains bindings for https://docs.revenuecat.com/docs/android</Description>
+		<RepositoryUrl>https://github.com/Kebechet/Maui.RevenueCat.Android</RepositoryUrl>
+		<PackageProjectUrl>https://github.com/Kebechet/Maui.RevenueCat.Android</PackageProjectUrl>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<PackageLicenseFile>LICENSE</PackageLicenseFile>
+		<RepositoryType>git</RepositoryType>
+		<OutputType>Library</OutputType>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<DebugSymbols>true</DebugSymbols>
+		<DebugType>embedded</DebugType>
+		<Version>7.2.4.0</Version>
+		<PackageIcon>icon.png</PackageIcon>
+		<PackageReleaseNotes>Initial binding release</PackageReleaseNotes>
+	</PropertyGroup>
 
 	<ItemGroup>
 		<None Remove="Jars\purchases-7.2.4-sources.jar" />
@@ -28,5 +49,22 @@
 
 		<!--fixed build error "androidx.collection.ArrayMapKt is defined multiple times"-->
 		<PackageReference Include="Xamarin.AndroidX.Fragment.Ktx" Version="1.6.2.1" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="..\..\README.md">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+
+		<None Include="..\..\LICENSE">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+
+		<None Include="..\..\icon.png">
+		  <Pack>True</Pack>
+		  <PackagePath>\</PackagePath>
+		</None>
 	</ItemGroup>
 </Project>

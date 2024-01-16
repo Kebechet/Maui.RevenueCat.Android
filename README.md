@@ -1,71 +1,43 @@
-# Maui.RevenueCat.iOS
-- this binding is based on: https://github.com/thisisthekap/Xamarin.RevenueCat.iOS 
+# Maui.RevenueCat.Android
+- this binding is based on: https://github.com/thisisthekap/Xamarin.RevenueCat.Android 
 - it is created for .NET MAUI and targeted to `.NET 8`
-- it contains bindings for RevenueCat iOS plugin
+- it contains bindings for RevenueCat Android library
 	- https://www.revenuecat.com/
-	- https://docs.revenuecat.com/docs/ios
+	- https://docs.revenuecat.com/docs/android
 
 ## Versioning Scheme
-The versioning scheme of `Maui.RevenueCat.iOS` is derived from the versioning of `revenuecat/purchases-ios`.
+The versioning scheme of `Maui.RevenueCat.Android` is derived from the versioning of `revenuecat/purchases-android`.
 
 ### Example:
-| revenuecat/purchases-ios | Xamarin.RevenueCat.iOS | Note |
+| revenuecat/purchases-android | Maui.RevenueCat.Android | Note |
 |:--|:--|:--|
 | 3.4.1 | 3.4.1.0 | First version of bindings for 3.4.1 |
-| 3.4.1 | 3.4.1.17 | Bindings for 3.4.1 containing fixes |
+| 3.4.1 | 3.4.1.17 | Bindings for 3.4.1 containing 17 fixes |
 
-# Binding creation
-
-## Porting old xamarin library ios to .NET MAUI
-First version of our Maui binding was just changed `Xamarin.RevenueCat.iOS` binding working for .NET MAUI. It was binding around `RevenueCat ios 4.9.0`, but this native library contained bitcode which is no longer accepted by AppStore.
-Porting of binding from Xamarin to Maui required several changes:
-- Removed some attributes in `ApiDefinitions` - [commit](https://github.com/Kebechet/Maui.RevenueCat.iOS/commit/5796f045bf6d8c591f8c5bc2afbb9535abd97bda)
-- Changed `IntPtr` -> `NativeReference` in `ApiDefinitions` - [commit](https://github.com/Kebechet/Maui.RevenueCat.iOS/commit/2adb01ce19f4423588cd1b87a290067fc25c3593)
-	- [reference](https://blog.ostebaronen.dk/2023/04/net6.0-migration.html#6-change-intptr-to-nativehandle-on-ios)
-- Added `NoBindingEmbedding = false` - [commit](https://github.com/Kebechet/Maui.RevenueCat.iOS/commit/d88e24a8c4f36f1774c42801b482f8276d286b53)
-## Creating completely new binding consisted of these steps:
-Because of a problem with bitcode I have decided to create completely new binding from scratch. Here are steps I have done:
-- On my MAC I have downloaded and installed [Objective Sharpie](https://learn.microsoft.com/en-us/xamarin/cross-platform/macios/binding/objective-sharpie/)
-- I have downloaded [RevenueCat purchases-ios v4.19.0](https://github.com/RevenueCat/purchases-ios/releases/tag/4.19.0)
-- I have extracted the `iOS` folder on my MAC desktop
-- started terminal, then `cd ~/Desktop`
-- I used command `sharpie bind -framework iOS/RevenueCat.framework -sdk iphoneos16.4 -scope iOS/RevenueCat.framework/Headers`
-  - this command generated `ApiDefinitions.cs` and `StructsAndEnums.cs` files
-- then I placed new framework file into repo
-  - framework file - [commit](https://github.com/Kebechet/Maui.RevenueCat.iOS/commit/f03da2c2a98c0ae5cae5492a9f9974191aa880d8)
-  - generated files - [commit](https://github.com/Kebechet/Maui.RevenueCat.iOS/commit/761d75b3fe01309a54fde1c5a1382d357e2b11d2)
-- firstly commented but later completely removed `Verify` attributes - [commit](https://github.com/Kebechet/Maui.RevenueCat.iOS/commit/471e867dccf15124e81bcd9d1943f6599563629f)
-- then removed all device-specific attributes - [commit](https://github.com/Kebechet/Maui.RevenueCat.iOS/commit/5aa004565614ba65d19ef3d96724e015f1584b44)
-- added namespaces - [commit](https://github.com/Kebechet/Maui.RevenueCat.iOS/commit/09b545fc5f0f9bf2da8e328aa3b9757d7ed1f3c5)
-- comment out text that was not commented out - [commit](https://github.com/Kebechet/Maui.RevenueCat.iOS/commit/bd79684d44e15f46cdd5225678e7bc52bfc746da)
-- then I merged interfaces with the same names e.g. `RCAttribution` and `RCAttribution_RevenueCat_Swift_3714` I put together - [commit](https://github.com/Kebechet/Maui.RevenueCat.iOS/commit/43c996de81c8270b9783eadeea09ed557d6f8901)
-  - I have also removed obsolete interfaces/methods 
-- removed default using there were useless - [commit](https://github.com/Kebechet/Maui.RevenueCat.iOS/commit/459fc5d4bf09a4dfaaa6122c841a307f54779915)
-- removed constants interface - [commit](https://github.com/Kebechet/Maui.RevenueCat.iOS/commit/f794248fa9a524e83471526b5517d9f1046b8f04)
-  - because I didnt know how to bind `byte[]` 😅
-- removed interfaces without methods/properties - [commit](https://github.com/Kebechet/Maui.RevenueCat.iOS/commit/221c593836f6e5dd956466cafe7603585b73b932)
-- remove Protocols that were used for inheritance - [commit](https://github.com/Kebechet/Maui.RevenueCat.iOS/commit/b614289e0dbc4edefb4c6c7e024ae1586a6ebf83)
-- removed delegate that was not used anywhere - [commit](https://github.com/Kebechet/Maui.RevenueCat.iOS/commit/d408d99423226391f7b37f73791bad7fc4772326)
-- added `INativeObject` inheritance for interfaces that were used in dictionaries and was of type `NSObject` - [commit](https://github.com/Kebechet/Maui.RevenueCat.iOS/commit/ea45d9555946887aa814fb470af45f616c89785d)
-- replaced `NSUrlRequest` for `NSMutableUrlRequest` - [commit](https://github.com/Kebechet/Maui.RevenueCat.iOS/commit/df1bb5ef23fa7176f3cc4f2b6a4778dea7baa53b)
-- created delegates for Purchases - [commit](https://github.com/Kebechet/Maui.RevenueCat.iOS/commit/464d0e3028fea089bdb133bc8575381087f9d294)
-- removed inherited `NSObject` methods - [commit](https://github.com/Kebechet/Maui.RevenueCat.iOS/commit/5fd366f5eb58903b1788a3781a9f6d00a470f681)
-  - also removed `DebugDescription` - [commit](https://github.com/Kebechet/Maui.RevenueCat.iOS/commit/d3741f1ce23b4b46e1a0184b03baafd1ff715201)
-- removed inherited `NSOperation` methods - [commit](https://github.com/Kebechet/Maui.RevenueCat.iOS/commit/1033aaca86e60519ea4b75ed3fe6d65ea3e456c4)
-- I have created aliases for methods named the same - [commit](https://github.com/Kebechet/Maui.RevenueCat.iOS/commit/866a0fbbff26b942307c77dd54bd14ac81de572b)
-  - ⚠️ I dont know if this is correct or even necessary, maybe I could delete them as well
-- removed attributes containing `Name` - [commit](https://github.com/Kebechet/Maui.RevenueCat.iOS/commit/4aa727562d17829c742dcd6c2f51ba3c3cb836ff)
-  - this was because on my windows machine I was getting errors that platform doesnt have symbols specified for this methods containing the name
-  - later I completely removed those methods because the error was still there - [commit](https://github.com/Kebechet/Maui.RevenueCat.iOS/commit/3fcceeb6ff9d8207a3545f89ddf28639cb3c0f79)
-- ✅ - Done 
-  - I have tested this new binding in the simulator as well as on real device through TestFlight and it works as expected
-
-
-## ⚠️**Warning**
-- in .NET 7 and with VS2022 v17.7 IT IS NOT POSSIBLE TO BUILD THE PACKAGE WITH EMBEDDED NATIVE LIBRARY (even with connected MAC).
-- You need to build this package on MAC with VS for MAC. Only that way it will link native library to the package.
-- https://github.com/dotnet/maui/issues/14982
-
+## How the binding was created
+RevenueCat Android library is writtein in `Kotlin`. You can find more about Kotlin binding [here](https://learn.microsoft.com/en-us/xamarin/android/platform/binding-kotlin-library/).
+- To start create a project `Android Java library binding`
+- Then files of the the library have to be downloaded. 
+  - For native libraries you can use [Google maven repo](https://maven.google.com/web/index.html). 
+  - For downloading this library I have used [mvnrepository.com](https://mvnrepository.com/) to 
+	download the [RevenueCat v7.2.4](https://mvnrepository.com/artifact/com.revenuecat.purchases/purchases/7.2.4) android library.
+  - At the time of creating this binding `v7.3.3` was out but it wasn't compatible with latest `Xamarin.Android.Google.BillingClient` library
+- [Click files->View all](https://i.imgur.com/95lzSPD.png): You have to download there files:
+  - `.aar` that contains the compiled library and 
+  - `-sources.jar` that is used in binding process for documenting the library.
+- After download create in your project `Jars` folder and put there both files. For
+  - for `.aar` set `Build Action` to: `AndroidLibrary`
+  - for `-sources.jar` set `Build Action` to: `JavaSourceJar` based on this [docs](https://learn.microsoft.com/en-us/xamarin/android/deploy-test/building-apps/build-items#javasourcejar)
+- Then you have to add all necessary dependencies. Dependencies of the library are showed on [mvnrepository site](https://i.imgur.com/uDh8TtN.png). Your binding library should contain all these dependencies (ideally in same `version` but until those libraries are compatible, versions are not important).
+  - I  have found and added `PackageReference` for all `Xamarin/Maui` alternatives of these libraries
+  - ⚠️ When I wanted to use newer RevenueCat `v7.3.3` with requirement of `BillingClient v6.1.0` while the newest Xamarin library was stuck at `v6.0.1` it caused build errors after inserting this project to the main MAUI app. Rule of thumb is that usually libraries are back compatible but not forward compatible. So when it requires newer version it could be a problem but when you have newer version of the package it could be okay(depends if some breaking changes were introduced).
+- ⚠️ Even after finding all mentioned libraries I had some warnings regarding some `amazon` method calls and build error `androidx.collection.ArrayMapKt is defined multiple times`
+  - the amazon problem was fixed by including package `Eddys.Amazon.AppStoreSdk.Binding`
+  - and the compilation error by including `Xamarin.AndroidX.Fragment.Ktx`. 
+	- I found this in the source: [purchases-android-main\purchases-android-main\api-tester\build.gradle](https://github.com/RevenueCat/purchases-android/blob/main/api-tester/build.gradle#L59) at the end and it is present also in [gradle\libs.versions.toml](https://github.com/RevenueCat/purchases-android/blob/main/gradle/libs.versions.toml#L38)
+- After providing all necessary libraries you have to adjust `Metadata.xml` to get rid of compilation errors. - [docs](https://learn.microsoft.com/en-us/xamarin/android/platform/binding-java-library/customizing-bindings/java-bindings-metadata)
+- ⚠️ At the end there are still 2 important warnings left with `kotlin.jvm.functions.Function1` and `kotlin.jvm.internal.IntCompanionObject` but even with then the binding works correctly
+- I hope this helped and enjoy the binding ❤️
 
 # License
 This repository is licensed with the [MIT](LICENSE.txt) license.
