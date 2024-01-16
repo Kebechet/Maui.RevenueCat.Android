@@ -22,5 +22,11 @@
 		<PackageReference Include="org.jetbrains.kotlin.kotlin.parcelize.runtime" Version="1.5.20.1" />
 		<PackageReference Include="Xamarin.Kotlin.StdLib" Version="1.9.22" />
 		<PackageReference Include="nventive.binding.kotlinx.serialization.json" Version="1.2.2" />
+
+		<!--fixed amazon warnings-->
+		<PackageReference Include="Eddys.Amazon.AppStoreSdk.Binding" Version="3.0.3" />
+
+		<!--fixed build error "androidx.collection.ArrayMapKt is defined multiple times"-->
+		<PackageReference Include="Xamarin.AndroidX.Fragment.Ktx" Version="1.6.2.1" />
 	</ItemGroup>
 </Project>
