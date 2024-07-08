@@ -38,7 +38,7 @@ RevenueCat Android library is writtein in `Kotlin`. You can find more about Kotl
   - and the compilation error by including `Xamarin.AndroidX.Fragment.Ktx`. 
 	- I found this in the source: [purchases-android-main\purchases-android-main\api-tester\build.gradle](https://github.com/RevenueCat/purchases-android/blob/main/api-tester/build.gradle#L59) at the end and it is present also in [gradle\libs.versions.toml](https://github.com/RevenueCat/purchases-android/blob/main/gradle/libs.versions.toml#L38)
 - After providing all necessary libraries you have to adjust `Metadata.xml` to get rid of compilation errors. - [docs](https://learn.microsoft.com/en-us/xamarin/android/platform/binding-java-library/customizing-bindings/java-bindings-metadata)
-- ⚠️ At the end there are still 2 important warnings left with `kotlin.jvm.functions.Function1` and `kotlin.jvm.internal.IntCompanionObject` but even with then the binding works correctly
+- ⚠️ At the end there are still 2 important warnings left with `kotlin.jvm.functions.Function1` and `kotlin.jvm.internal.IntCompanionObject` but even with them the binding works correctly
 - I hope this helped and enjoy the binding ❤️
 
 # License
